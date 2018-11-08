@@ -38,11 +38,16 @@ def get_first_line(filename):
     'Extracts first line from pdf converted to txt file'
 
     try:
+        # Create dummyfile.txt
         dummyfile = open('dummyfile.txt', 'w+')
         dummyfile.close()
+        # Convert pdf to text using linux command pdftotext
         proc_convert = subprocess.Popen(
                 ['pdftotext', '-f', '1', '-l', '1', filename, 'dummyfile.txt'])
-        proc_convert.terminate()
+        # Wait for conversion process to complete
+        while proc_convert.poll() is None:
+            pass
+        # Get first line from txt file using linux command head
         first_line = subprocess.check_output(
                 ['head', '-n', '1', 'dummyfile.txt']).decode('utf-8').rstrip()
     except OSError:
