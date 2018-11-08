@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Extracts title from pdf
 # Author: Cibin Joseph
