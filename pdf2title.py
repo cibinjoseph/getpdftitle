@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Extracts title from pdf 
+# Extracts title from pdf
 # Author: Cibin Joseph
 
 import os
@@ -38,19 +38,21 @@ def get_first_line(filename):
     'Extracts first line from pdf converted to txt file'
 
     try:
-        proc_createdummy = subprocess.Popen(['touch', 'dummyfile.txt'])
+        dummyfile = open('dummyfile.txt', 'w+')
+        dummyfile.close()
         proc_convert = subprocess.Popen(
                 ['pdftotext', '-f', '1', '-l', '1', filename, 'dummyfile.txt'])
+        proc_convert.terminate()
         first_line = subprocess.check_output(
                 ['head', '-n', '1', 'dummyfile.txt']).decode('utf-8').rstrip()
     except OSError:
         warnings.warn('Linux command not found. pdf not converted to txt')
         first_line = ''
-    finally:
-        try:
-            os.remove('dummyfile.txt')
-        except OSError:
-            pass
+
+    try:
+        os.remove('dummyfile.txt')
+    except OSError:
+        pass
     return first_line
 
 
@@ -81,6 +83,10 @@ def get_clean_title(filename):
     elif ('untitled' in title):
         from_txt = True
     elif ('replace with your title' in title):
+        from_txt = True
+    elif ('pdf' in title):
+        from_txt = True
+    elif ('PDF' in title):
         from_txt = True
 
     if (from_txt is True):
