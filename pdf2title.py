@@ -1,17 +1,25 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # Extracts title from all pdf files in current directory to a txt file
 # Author: Cibin Joseph
-# Use with python3
 
 import os
+import sys
 import subprocess
 import glob
-from pdfrw import PdfReader
 from warnings import warn
-import argparse
+try:
+    import argparse
+except ImportError:
+    print('ERROR: Ensure python module argparse is installed')
+    exit(-1)
+try:
+    from pdfrw import PdfReader
+except ImportError:
+    print('ERROR: Ensure python module pdfrw is installed')
+    exit(-1)
 
-def extract_raw_title(filename):
+def get_raw_title(filename):
     'Extracts title from a given pdf file'
     reader=PdfReader(filename)
 
@@ -25,7 +33,7 @@ def extract_raw_title(filename):
     return title
 
 
-def extract_first_line(filename):
+def get_first_line(filename):
     'Extracts first line from pdf converted to txt file'
 
     try:
@@ -42,7 +50,8 @@ def extract_first_line(filename):
             pass
     return first_line
 
-def create_parser():
+def init_parser():
+    'Initializes the argument parser'
     parser=argparse.ArgumentParser(
             description=('Extracts title from pdf file'),
             epilog='Author: Cibin Joseph')
@@ -51,25 +60,25 @@ def create_parser():
     parser.add_argument('-s','--stat',help='Show statistics of files parsed',action='store_true')
     return parser
 
-def extract_clean_title(filename):
-    title=extract_raw_title(filename)
-    from_txt=0
+def get_clean_title(filename):
+    title=get_raw_title(filename)
+    from_txt=False
     if (title[0:4]=='none'):
-        from_txt=1
+        from_txt=True
     elif ('untitled' in title):
-        from_txt=1
+        from_txt=True
     elif ('replace with your title' in title):
-        from_txt=1
+        from_txt=True
 
-    if (from_txt==1):
+    if (from_txt==True):
         # Better way - Convert to txt once, check each line for valid title
-        title=extract_first_line(filename)
+        title=get_first_line(filename)
 
     return [title,from_txt]
 
 
 # main
-parser=create_parser()
+parser=init_parser()
 args=parser.parse_args()
 
 if (args.filename == '.'):
@@ -79,23 +88,24 @@ if (args.filename == '.'):
     num_txt=0
     for filename in filelist:
         num_pdf=num_pdf+1
-        [title,from_txt]=extract_clean_title(filename)
-        if (from_txt==1):
+        [title,from_txt]=get_clean_title(filename)
+        if (from_txt==True):
             num_txt=num_txt+1
-    if (args.name=='True'):
-        print(filename+'  '+title+'\n')
-    else:
-        print(title+'\n')
+        if (args.name==True):
+            print(filename+'  '+title)
+        else:
+            print(title)
 else:
     num_pdf=1
-    [title,from_txt]=extract_clean_title(args.filename)
-    if (args.name=='True'):
-        print(filename+'  '+title+'\n')
+    num_txt=0
+    [title,from_txt]=get_clean_title(args.filename)
+    if (args.name==True):
+        print(filename+'  '+title)
     else:
-        print(title+'\n')
-    if (from_txt==1):
+        print(title)
+    if (from_txt==True):
         num_txt=1
 
-if (args.stat=='True'):
-    print(str(num_pdf)+' pdf files parsed')
+if (args.stat==True):
+    print('\n'+str(num_pdf)+' pdf files parsed')
     print(str(num_txt)+' titles extracted from pdf converted to txt')
