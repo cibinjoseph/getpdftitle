@@ -1,6 +1,7 @@
 # getpdftitle
 getpdftitle extracts the title from pdf files. The extracted title is redirected to stdout.  
 When an explicit file name is not specified, the title from all pdf documents in the current directory is extracted and output as a list.
+For pdf files that do not contain title in metadata, the pdf is converted to txt file and the first non-empty line is extracted.
 
 ## Usage
 getpdftitle [-h] [-n] [-s] [filename [filename ...]]  
