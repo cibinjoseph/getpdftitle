@@ -1,10 +1,9 @@
 # getpdftitle
-getpdftitle extracts titles from pdf files
+getpdftitle extracts the title from pdf files. The extracted title is redirected to stdout.
+When an explicit file name is not specified, getpdftitle extracts the title from all pdf documents in the current directory. 
 
 ## Usage
 getpdftitle [-h] [-n] [-s] [filename [filename ...]]
-
-Extracts title from pdf file
 
 positional arguments:
   filename    Extracts title from file.pdf. Extracts from all pdf files in the
@@ -17,6 +16,7 @@ optional arguments:
 
 ## Requirements
 sudo pip install pdfrw
+sudo pip install argparse
 
 ## Author
 [Cibin Joseph](https://github.com/cibinjoseph) (cibinjoseph92@gmail.com).
