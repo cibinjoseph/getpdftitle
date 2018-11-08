@@ -15,7 +15,7 @@ _optional arguments_:
   -s, --stat  Show statistics of files parsed  
 
 ## Requirements
-sudo pip install pdfrw
+sudo pip install pdfrw  
 sudo pip install argparse
 
 ## Author
