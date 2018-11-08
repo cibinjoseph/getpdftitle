@@ -21,15 +21,20 @@ except ImportError:
 
 def get_raw_title(filename):
     'Extracts title from a given pdf file'
-    reader = PdfReader(filename)
+    try:
+        reader = PdfReader(filename)
 
-    # Extract title from file
-    title = reader.Info.Title
-    title = str(title)
+        # Extract title from file
+        title = reader.Info.Title
+        title = str(title)
 
-    # replace unnecessary () in title
-    title = title.replace('(', ' ')
-    title = title.replace(')', ' ')
+        # replace unnecessary () in title
+        title = title.replace('(', ' ')
+        title = title.replace(')', ' ')
+    except FileNotFoundError:
+        print('ERROR: File does not exist or is not readable')
+        title = ''
+
     return title
 
 
