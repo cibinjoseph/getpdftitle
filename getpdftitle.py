@@ -7,7 +7,6 @@ import os
 import sys
 import subprocess
 import glob
-from warnings import warn
 try:
     import argparse
 except ImportError:
@@ -47,11 +46,15 @@ def get_first_line(filename):
         # Wait for conversion process to complete
         while proc_convert.poll() is None:
             pass
-        # Get first line from txt file using linux command head
-        first_line = subprocess.check_output(
-                ['head', '-n', '1', 'dummyfile.txt']).decode('utf-8').rstrip()
+        # Get first non-empty line from txt file
+        first_line = ''
+        with open('dummyfile.txt') as dummyfile:
+            for i, line in enumerate(dummyfile):
+                if (line.strip() != ''):
+                    first_line = line.strip('\n').strip()
+                    break
     except OSError:
-        warnings.warn('Linux command not found. pdf not converted to txt')
+        print('WARNING: Unix command pdftotext not found. pdf not converted to txt')
         first_line = ''
 
     try:
