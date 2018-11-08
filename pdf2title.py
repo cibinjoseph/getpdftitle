@@ -76,6 +76,8 @@ def get_clean_title(filename):
     from_txt = False
     if (title[0:4] == 'none'):
         from_txt = True
+    if (title[0:4] == 'None'):
+        from_txt = True
     elif ('untitled' in title):
         from_txt = True
     elif ('replace with your title' in title):
