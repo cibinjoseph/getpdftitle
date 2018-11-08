@@ -60,7 +60,7 @@ def init_parser():
             description=('Extracts title from pdf file'),
             epilog='Author: Cibin Joseph')
     parser.add_argument(
-            'filename', nargs='*', type=argparse.FileType('r'), default='.',
+            'filename', nargs='*', default='.',
             help='Extracts title from file.pdf. Extracts from all pdf files in the current directory if a filename is not specified')
     parser.add_argument(
             '-n', '--name', action='store_true',
@@ -109,7 +109,7 @@ if (args.filename == '.'):
 else:
     num_pdf = 1
     num_txt = 0
-    [title, from_txt] = get_clean_title(args.filename)
+    [title, from_txt] = get_clean_title(str(args.filename[0]))
     if (args.name is True):
         print(filename+'  '+title)
     else:
