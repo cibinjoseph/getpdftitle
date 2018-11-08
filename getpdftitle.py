@@ -63,7 +63,9 @@ def init_parser():
             epilog='Author: Cibin Joseph')
     parser.add_argument(
             'filename', nargs='*', default='.',
-            help='Extracts title from file.pdf. Extracts from all pdf files in the current directory if a filename is not specified')
+            help='Extracts title from file.pdf.\
+            Extracts from all pdf files in current directory\
+            if a filename is not specified')
     parser.add_argument(
             '-n', '--name', action='store_true',
             help='Include filename in output')
@@ -75,19 +77,12 @@ def init_parser():
 
 def get_clean_title(filename):
     title = get_raw_title(filename)
+    wordlist_replace = ['none', 'None', 'untitled',
+                        'replace with your title', 'pdf', 'PDF']
     from_txt = False
-    if (title[0:4] == 'none'):
-        from_txt = True
-    if (title[0:4] == 'None'):
-        from_txt = True
-    elif ('untitled' in title):
-        from_txt = True
-    elif ('replace with your title' in title):
-        from_txt = True
-    elif ('pdf' in title):
-        from_txt = True
-    elif ('PDF' in title):
-        from_txt = True
+    for word in wordlist_replace:
+        if (word in title):
+            from_txt = True
 
     if (from_txt is True):
         # Better way - Convert to txt once,  check each line for valid title
