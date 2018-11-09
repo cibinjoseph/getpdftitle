@@ -29,7 +29,7 @@ def get_raw_title(filename):
         title = str(title)
 
         # replace unnecessary () in title
-        title=title.strip().lstrip('(').rstrip(')')
+        title = title.strip().lstrip('(').rstrip(')')
     except FileNotFoundError:
         print('ERROR: File does not exist or is not readable')
         title = ''
@@ -97,7 +97,6 @@ def get_clean_title(filename):
             from_txt = True
 
     if (from_txt is True):
-        # Better way - Convert to txt once,  check each line for valid title
         title = get_first_line(filename)
 
     return [title, from_txt]
@@ -110,27 +109,21 @@ args = parser.parse_args()
 if (args.filename == '.'):
     # Get all filenames of current directory to a list
     filelist = sorted(glob.glob('*.pdf')+glob.glob('*.PDF'))
-    num_pdf = 0
-    num_txt = 0
-    for filename in filelist:
-        num_pdf = num_pdf+1
-        [title, from_txt] = get_clean_title(filename)
-        if (from_txt is True):
-            num_txt = num_txt+1
-        if (args.name is True):
-            print(filename+'  '+title)
-        else:
-            print(title)
 else:
-    num_pdf = 1
-    num_txt = 0
-    [title, from_txt] = get_clean_title(str(args.filename[0]))
+    # Get all input files into a filelist
+    filelist = args.filename
+
+num_pdf = 0
+num_txt = 0
+for filename in filelist:
+    num_pdf = num_pdf+1
+    [title, from_txt] = get_clean_title(filename)
+    if (from_txt is True):
+        num_txt = num_txt+1
     if (args.name is True):
         print(filename+'  '+title)
     else:
         print(title)
-    if (from_txt is True):
-        num_txt = 1
 
 if (args.stat is True):
     print('\n'+str(num_pdf)+' pdf files parsed')
