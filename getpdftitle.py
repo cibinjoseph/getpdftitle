@@ -7,15 +7,17 @@ import os
 import sys
 import subprocess
 import glob
+if sys.version_info[0] < 3:
+    raise Exception('Use Python 3')
 try:
     import argparse
 except ImportError:
-    print('ERROR: Ensure python module argparse is installed')
+    print('ERROR: Ensure python module argparse is installed for Python 3')
     exit(-1)
 try:
     from pdfrw import PdfReader
 except ImportError:
-    print('ERROR: Ensure python module pdfrw is installed')
+    print('ERROR: Ensure python module pdfrw is installed for Python 3')
     exit(-1)
 
 
