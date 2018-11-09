@@ -88,7 +88,7 @@ def init_parser():
 def get_clean_title(filename):
     title = get_raw_title(filename)
     wordlist_replace = ['none', 'None', 'untitled',
-            'replace with your title', 'pdf', 'PDF']
+                        'replace with your title', 'pdf', 'PDF']
     from_txt = False
     for word in wordlist_replace:
         if (word in title):
