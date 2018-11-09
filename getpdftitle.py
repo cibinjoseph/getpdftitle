@@ -12,13 +12,11 @@ if sys.version_info[0] < 3:
 try:
     import argparse
 except ImportError:
-    print('ERROR: Ensure python module argparse is installed for Python 3')
-    exit(-1)
+    raise ImportError('Ensure python module argparse is installed for Python 3')
 try:
     from pdfrw import PdfReader
 except ImportError:
-    print('ERROR: Ensure python module pdfrw is installed for Python 3')
-    exit(-1)
+    raise ImportError('Ensure python module pdfrw is installed for Python 3')
 
 
 def get_raw_title(filename):
