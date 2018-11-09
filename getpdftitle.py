@@ -29,8 +29,7 @@ def get_raw_title(filename):
         title = str(title)
 
         # replace unnecessary () in title
-        title = title.replace('(', ' ')
-        title = title.replace(')', ' ')
+        title=title.strip().lstrip('(').rstrip(')')
     except FileNotFoundError:
         print('ERROR: File does not exist or is not readable')
         title = ''
