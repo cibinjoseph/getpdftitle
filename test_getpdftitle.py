@@ -35,7 +35,7 @@ class TestCode(unittest.TestCase):
     def test_script(self):
         # Single sample file
         p = subprocess.Popen(['python3', 'getpdftitle.py', 'sample1.pdf'],
-                             stdout=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.assertEqual(p.stdout.read().decode('utf-8'),
                          'A Simple PDF File\n')
         p.stdout.close()
@@ -51,9 +51,9 @@ class TestCode(unittest.TestCase):
         # Whole directory
         p = subprocess.Popen(['python3', 'getpdftitle.py'],
                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        len_output = len(p.stdout.read().decode('utf-8').split('\n')) - 1 
+        len_output = len(p.stdout.read().decode('utf-8').split('\n')) - 1
         num_pdf_files = len(glob.glob('*.pdf')+glob.glob('*.PDF'))
-        self.assertTrue(len_output == num_pdf_files)
+        self.assertEqual(len_output, num_pdf_files)
         p.stdout.close()
 
         # Non-existent file
@@ -61,7 +61,6 @@ class TestCode(unittest.TestCase):
                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.assertRaises(FileNotFoundError)
         p.stdout.close()
-
 
 
 # So that unittest maybe run using python test_getpdftitle.py
