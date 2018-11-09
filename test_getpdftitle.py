@@ -25,12 +25,17 @@ class TestCode(unittest.TestCase):
         # Empty metadata
         [title, from_txt] = gpdft.get_clean_title(self.samplefile1)
         self.assertEqual(title, 'A Simple PDF File')
-        self.assertEqual(from_txt, True)
+        self.assertTrue(from_txt)
+
+        # Non-empty metadata
+        [title, from_txt] = gpdft.get_clean_title(self.samplefile2)
+        self.assertEqual(title, 'A Random Document')
+        self.assertFalse(from_txt)
 
     def test_script(self):
         # Single sample file
         p = subprocess.Popen(['python3', 'getpdftitle.py', 'sample1.pdf'],
-                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                             stdout=subprocess.PIPE)
         self.assertEqual(p.stdout.read().decode('utf-8'),
                          'A Simple PDF File\n')
         p.stdout.close()
