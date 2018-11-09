@@ -23,18 +23,14 @@ except ImportError:
 
 def get_raw_title(filename):
     'Extracts title from a given pdf file'
-    try:
-        reader = PdfReader(filename)
+    reader = PdfReader(filename)
 
-        # Extract title from file
-        title = reader.Info.Title
-        title = str(title)
+    # Extract title from file
+    title = reader.Info.Title
+    title = str(title)
 
-        # replace unnecessary () in title
-        title = title.strip().lstrip('(').rstrip(')')
-    except FileNotFoundError:
-        print('ERROR: File does not exist or is not readable')
-        title = ''
+    # replace unnecessary () in title
+    title = title.strip().lstrip('(').rstrip(')')
 
     return title
 
@@ -78,8 +74,8 @@ def init_parser():
     parser.add_argument(
             'filename', nargs='*', default='.',
             help='Extracts title from file.pdf.\
-            Extracts from all pdf files in current directory\
-            if a filename is not specified')
+                    Extracts from all pdf files in current directory\
+                    if a filename is not specified')
     parser.add_argument(
             '-n', '--name', action='store_true',
             help='Include filename in output')
@@ -92,7 +88,7 @@ def init_parser():
 def get_clean_title(filename):
     title = get_raw_title(filename)
     wordlist_replace = ['none', 'None', 'untitled',
-                        'replace with your title', 'pdf', 'PDF']
+            'replace with your title', 'pdf', 'PDF']
     from_txt = False
     for word in wordlist_replace:
         if (word in title):
@@ -118,6 +114,8 @@ else:
 num_pdf = 0
 num_txt = 0
 for filename in filelist:
+    if (os.path.exists(filename) is False):
+        raise FileNotFoundError('File does not exist or is not readable')
     num_pdf = num_pdf+1
     [title, from_txt] = get_clean_title(filename)
     if (from_txt is True):
